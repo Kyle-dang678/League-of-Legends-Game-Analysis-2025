@@ -23,3 +23,75 @@ The relevant columns for our analysis are:
 | `firstblood`       | Whether the team secured first blood                                                                                                                 |
 | `firstdragon`      | Whether the team secured first dragon                                                                                                                |
 | `datacompleteness` | Whether the game data is complete or partial                                                                                                         |
+
+## Data Cleaning and Exploratory Data Analysis
+
+### Data Cleaning
+
+The raw dataset contains 120,636 rows representing both individual player rows and team aggregate rows. We performed the following cleaning steps:
+
+1. **Filtered to team rows only** — since our question is about team-level outcomes, we kept only rows where `position == 'team'`, giving us 20,106 rows where each row represents one team's performance in one game.
+
+2. **Removed partial games** — we filtered out rows where `datacompleteness == 'partial'` since these games were missing all early game statistics like `golddiffat15`. This left us with 18,472 complete team rows representing 9,236 unique games.
+
+3. **Created a gold advantage indicator** — we created a binary column `gold_positive` indicating whether a team had a positive gold difference at 15 minutes, which was used in our hypothesis test.
+
+The head of our cleaned DataFrame is shown below:
+
+| gameid           | result | golddiffat15 | xpdiffat15 | csdiffat15 | playoffs |
+| :--------------- | -----: | -----------: | ---------: | ---------: | -------: |
+| LOLTMNT03_179647 |      0 |        -3837 |       -469 |        -16 |        0 |
+| LOLTMNT03_179647 |      1 |         3837 |        469 |         16 |        0 |
+| LOLTMNT06_96134  |      1 |         5069 |       2014 |         64 |        0 |
+| LOLTMNT06_96134  |      0 |        -5069 |      -2014 |        -64 |        0 |
+| LOLTMNT06_95160  |      0 |          118 |       1990 |        -43 |        0 |
+
+### Univariate Analysis
+
+The distribution of gold difference at 15 minutes across all team rows is approximately normal and centered around 0, which makes sense since every game has one team with a positive gold diff and one with the exact negative value.
+
+<iframe
+  src="assets/golddiff_distribution.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+The distribution of game length is right skewed, with most games lasting between 25-33 minutes. Very few games end before 20 minutes or go beyond 50 minutes in professional play.
+
+<iframe
+  src="assets/gamelength_distribution.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+### Bivariate Analysis
+
+Winning teams tend to have a higher gold difference at 15 minutes compared to losing teams, though there is overlap between the two distributions suggesting gold diff alone does not guarantee a win.
+
+<iframe
+  src="assets/golddiff_by_result.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+### Interesting Aggregates
+
+The table below shows the average gold difference at 15 minutes for winning teams and the win rate for gold-positive teams, grouped by league:
+
+| league | avg_golddiff15_winners | win_rate_gold_positive | num_games |
+| :----- | ---------------------: | ---------------------: | --------: |
+| PRMP   |                2997.03 |                   0.42 |       146 |
+| LJL    |                2335.81 |                   0.40 |       748 |
+| LPLOL  |                2254.51 |                   0.40 |       320 |
+| EBL    |                2034.67 |                   0.39 |       382 |
+| HM     |                1974.10 |                   0.39 |       380 |
+| PCS    |                1898.94 |                   0.39 |       606 |
+| KeSPA  |                1794.12 |                   0.37 |       112 |
+| LAS    |                1663.04 |                   0.37 |       978 |
+| HLL    |                1653.47 |                   0.38 |       442 |
+| LRN    |                1642.58 |                   0.38 |       302 |
+
+Leagues like PRMP and LJL tend to have larger gold advantages for winning teams, suggesting more dominant early game performances in those regions compared to more competitive leagues.
