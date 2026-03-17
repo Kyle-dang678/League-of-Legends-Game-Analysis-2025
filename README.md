@@ -95,3 +95,24 @@ The table below shows the average gold difference at 15 minutes for winning team
 | LRN    |                1642.58 |                   0.38 |       302 |
 
 Leagues like PRMP and LJL tend to have larger gold advantages for winning teams, suggesting more dominant early game performances in those regions compared to more competitive leagues.
+
+## Assessment of Missingness
+
+### MNAR Analysis
+
+We believe the `url` column in the dataset is likely **MNAR (Missing Not at Random)**. The URL field links to match recap pages, and its missingness is likely tied to whether a league or tournament has an official broadcast partner that publishes match pages — information that is not captured in the dataset itself.
+
+### Missingness Dependency
+
+We analyzed the missingness of `golddiffat15` by running permutation tests against other columns.
+
+**Depends on `datacompleteness`** (p-value = 0.0): Games marked as "partial" are missing all gold difference data, while complete games have none missing. This is a clear MAR dependency.
+
+**Does not depend on `side`** (p-value = 1.0): Missingness in `golddiffat15` is perfectly balanced between blue and red side teams, meaning which side a team plays on has no relationship to whether their gold data is missing.
+
+<iframe
+  src="assets/missingness.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
