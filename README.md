@@ -137,3 +137,15 @@ We analyzed the missingness of `golddiffat15` by running permutation tests again
   height="600"
   frameborder="0"
 ></iframe>
+
+## Framing a Prediction Problem
+
+**Prediction Problem:** Can we predict whether a team will win or lose a League of Legends match using only early game statistics available at or before 15 minutes?
+
+**Type:** Binary Classification — the response variable `result` takes on two values: 0 (loss) or 1 (win).
+
+**Response Variable:** We chose `result` because it is the most direct measure of game outcome and is ultimately what teams and analysts care about most.
+
+**Features:** We only use statistics available at or before 15 minutes into the game, such as `golddiffat15`, `xpdiffat15`, `csdiffat15`, `golddiffat10`, `killsat15`, `firstblood`, and `firstdragon`. We cannot use end-game statistics like total kills, towers destroyed, or total gold earned, because those would not be known at the time of prediction.
+
+**Evaluation Metric:** We use **accuracy** as our primary metric. Since the dataset is perfectly balanced — every game has exactly one winning team and one losing team — accuracy is a fair and appropriate metric and will not be misleading. We also report **F1-score** as a secondary metric to confirm our results.
