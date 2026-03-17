@@ -170,3 +170,39 @@ All three features are quantitative and were standardized using `StandardScaler`
 | Test  | 0.7318   | 0.7342   |
 
 The baseline model achieves **73.18% test accuracy**, which is significantly better than random guessing (50%). The train and test scores are very close, indicating the model generalizes well and is not overfitting. However, 73% accuracy leaves room for improvement — we believe adding more features capturing early objective control and kill differences could improve performance.
+
+## Final Model
+
+For the final model we switched to a **Random Forest Classifier** and engineered four additional features on top of the baseline features.
+
+**New features added:**
+
+- `golddiffat10` (quantitative) — gold difference at 10 minutes captures an earlier indication of game state before teams have started grouping for objectives. A team that is already ahead at 10 minutes is likely snowballing (progressively stacking) their advantage.
+- `killsat15` (quantitative) — kills at 15 minutes capture early aggression and fighting. Teams that are winning fights early or have more kills tend to translate that into gold and objective advantages.
+- `firstblood` (nominal) — whether the team secured first blood (binary 0/1). First blood gives an additional gold and experience bonus, possibly signifying which team has an early momentum.
+- `firstdragon` (nominal) — whether the team secured first dragon (binary 0/1). Dragons give stacking buffs that stack over the course of the game, making early dragon control strategically significant.
+
+**Hyperparameter Tuning:**
+
+We used `GridSearchCV` with 5-fold cross validation to tune `n_estimators` and `max_depth`. The best parameters were:
+
+- `n_estimators`: 50
+- `max_depth`: 5
+
+A shallow forest with fewer trees performed best, suggesting the relationship between early game stats and winning is relatively straightforward and doesn't require a highly complex model.
+
+**Performance:**
+
+| Split | Accuracy | F1-Score |
+| ----- | -------- | -------- |
+| Train | 0.7490   | 0.7458   |
+| Test  | 0.7394   | 0.7394   |
+
+The final model improves over the baseline by **+0.76% test accuracy** and **+0.005 F1-score**. The model at this point still generalizes well with no signs of overfitting.
+
+<iframe
+  src="assets/confusion_matrix.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
