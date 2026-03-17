@@ -149,3 +149,24 @@ We analyzed the missingness of `golddiffat15` by running permutation tests again
 **Features:** We only use statistics available at or before 15 minutes into the game, such as `golddiffat15`, `xpdiffat15`, `csdiffat15`, `golddiffat10`, `killsat15`, `firstblood`, and `firstdragon`. We cannot use end-game statistics like total kills, towers destroyed, or total gold earned, because those would not be known at the time of prediction.
 
 **Evaluation Metric:** We use **accuracy** as our primary metric. Since the dataset is perfectly balanced — every game has exactly one winning team and one losing team — accuracy is a fair and appropriate metric and will not be misleading. We also report **F1-score** as a secondary metric to confirm our results.
+
+## Baseline Model
+
+Our baseline model is a **Logistic Regression** classifier implemented in a single sklearn Pipeline with a StandardScaler preprocessing step.
+
+**Features used:**
+
+- `golddiffat15` (quantitative) — gold difference at 15 minutes
+- `xpdiffat15` (quantitative) — experience difference at 15 minutes
+- `csdiffat15` (quantitative) — creep score difference at 15 minutes
+
+All three features are quantitative and were standardized using `StandardScaler` to ensure they are on the same scale before being passed to the logistic regression model. No categorical encoding was needed for this baseline.
+
+**Performance:**
+
+| Split | Accuracy | F1-Score |
+| ----- | -------- | -------- |
+| Train | 0.7375   | 0.7358   |
+| Test  | 0.7318   | 0.7342   |
+
+The baseline model achieves **73.18% test accuracy**, which is significantly better than random guessing (50%). The train and test scores are very close, indicating the model generalizes well and is not overfitting. However, 73% accuracy leaves room for improvement — we believe adding more features capturing early objective control and kill differences could improve performance.
