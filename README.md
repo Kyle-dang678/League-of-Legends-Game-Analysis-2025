@@ -206,3 +206,36 @@ The final model improves over the baseline by **+0.76% test accuracy** and **+0.
   height="600"
   frameborder="0"
 ></iframe>
+
+## Fairness Analysis
+
+**Groups:**
+
+- **Group X:** Blue side teams
+- **Group Y:** Red side teams
+
+**Evaluation Metric:** Accuracy
+
+**Null Hypothesis:** Our model is fair. Its accuracy for blue side and red side teams are roughly the same and any differences are due to random chance.
+
+**Alternative Hypothesis:** Our model is unfair. Its accuracy differs between blue side and red side teams.
+
+**Test Statistic:** Difference in accuracy between blue side and red side teams (blue - red).
+
+**Significance Level:** alpha = 0.05
+
+**Results:**
+
+- Blue side accuracy: **0.7335**
+- Red side accuracy: **0.7450**
+- Observed difference: **-0.0115**
+- P-value: **0.426**
+
+**Conclusion:** We fail to reject the null hypothesis. The observed accuracy difference of 1.15% between blue and red side teams is not statistically significant as differences this large occur roughly 42% of the time by chance alone. We conclude that our model performs fairly across blue and red side teams.
+
+<iframe
+  src="assets/fairness_test.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
