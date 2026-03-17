@@ -116,3 +116,24 @@ We analyzed the missingness of `golddiffat15` by running permutation tests again
   height="600"
   frameborder="0"
 ></iframe>
+
+## Hypothesis Testing
+
+**Null Hypothesis:** Teams that are ahead in gold at 15 minutes win at the same rate as teams that are behind in gold at 15 minutes; any observed difference is due to random chance.
+
+**Alternative Hypothesis:** Teams that are ahead in gold at 15 minutes win at a higher rate than teams that are behind.
+
+**Test Statistic:** Difference in win rates between gold-positive teams (golddiffat15 > 0) and gold-negative teams (golddiffat15 < 0).
+
+**Significance Level:** alpha = 0.05
+
+**Result:** We observed a difference in win rates of **0.4577** (73% win rate for gold-positive teams vs 27% for gold-negative teams). After running 1000 permutations, the p-value was **0.0** — not a single permutation produced a difference as large as the observed one by chance.
+
+**Conclusion:** We reject the null hypothesis. The data strongly suggests that having a gold advantage at 15 minutes is associated with a significantly higher win rate. However, we cannot conclude causation — both winning and having a gold lead may be driven by an underlying factor such as overall team skill.
+
+<iframe
+  src="assets/hypothesis_test.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
